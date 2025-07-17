@@ -30,6 +30,16 @@ export const inspections = pgTable("inspections", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const custodialNotes = pgTable("custodial_notes", {
+  id: serial("id").primaryKey(),
+  school: text("school").notNull(),
+  date: text("date").notNull(),
+  location: text("location").notNull(),
+  locationDescription: text("location_description").notNull(),
+  notes: text("notes").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -40,7 +50,14 @@ export const insertInspectionSchema = createInsertSchema(inspections).omit({
   createdAt: true,
 });
 
+export const insertCustodialNoteSchema = createInsertSchema(custodialNotes).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertInspection = z.infer<typeof insertInspectionSchema>;
 export type Inspection = typeof inspections.$inferSelect;
+export type InsertCustodialNote = z.infer<typeof insertCustodialNoteSchema>;
+export type CustodialNote = typeof custodialNotes.$inferSelect;

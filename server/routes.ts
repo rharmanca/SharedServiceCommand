@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertInspectionSchema } from "@shared/schema";
+import { insertInspectionSchema, insertCustodialNoteSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // put application routes here
@@ -43,6 +43,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching inspection:", error);
       res.status(500).json({ error: "Failed to fetch inspection" });
+    }
+  });
+
+  // Custodial Notes routes
+  app.post("/api/custodial-notes", async (req, res) => {
+    try {
+      const validatedData = insertCustodialNoteSchema.parse(req.body);
+      const custodialNote = await storage.createCustodialNote(validatedData);
+      res.json(custodialNote);
+    } catch (error) {
+      console.error("Error creating custodial note:", error);
+      res.status(400).json({ error: "Invalid custodial note data" });
+    }
+  });
+
+  app.get("/api/custodial-notes", async (req, res) => {
+    try {
+      const custodialNotes = await storage.getCustodialNotes();
+      res.json(custodialNotes);
+    } catch (error) {
+      console.error("Error fetching custodial notes:", error);
+      res.status(500).json({ error: "Failed to fetch custodial notes" });
+    }
+  });
+
+  app.get("/api/custodial-notes/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const custodialNote = await storage.getCustodialNote(id);
+      if (!custodialNote) {
+        return res.status(404).json({ error: "Custodial note not found" });
+      }
+      res.json(custodialNote);
+    } catch (error) {
+      console.error("Error fetching custodial note:", error);
+      res.status(500).json({ error: "Failed to fetch custodial note" });
     }
   });
 
