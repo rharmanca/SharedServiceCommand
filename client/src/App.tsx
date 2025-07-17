@@ -130,7 +130,7 @@ function App() {
             </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Medical Clinics</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
-              The health of our comrades is our priority. Clinics provide essential care to keep our forces strong and resilient.
+              The health of our scholars is our priority. Clinics provide essential care to keep our forces strong and resilient.
             </p>
           </div>
         );
