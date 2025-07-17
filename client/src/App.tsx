@@ -43,7 +43,7 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-6 font-inter-bold">Custodial Operations</h2>
+            <h2 className="text-4xl font-bold text-amber-900 mb-6 font-inter-bold">Custodial Operations</h2>
             <div className="flex justify-center mb-8">
               <img 
                 src={custodialDutyImage} 
@@ -51,7 +51,7 @@ function App() {
                 className="rounded-lg shadow-lg max-w-md h-auto" 
               />
             </div>
-            <p className="text-xl text-gray-300 font-inter-regular mb-8">
+            <p className="text-xl text-amber-800 font-inter-regular mb-8">
               Cleanliness is a duty for all.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -91,8 +91,8 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-4 font-inter-bold">Food Service Division</h2>
-            <p className="text-xl text-gray-300 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Food Service Division</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Nourishing our community is vital.
             </p>
             <div className="mt-8 flex justify-center">
@@ -113,8 +113,8 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-4 font-inter-bold">Transportation Logistics</h2>
-            <p className="text-xl text-gray-300 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Transportation Logistics</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Movement of goods and personnel is meticulously managed. Our transportation network is the lifeblood of our operations.
             </p>
           </div>
@@ -128,8 +128,8 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-4 font-inter-bold">Medical Clinics</h2>
-            <p className="text-xl text-gray-300 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Medical Clinics</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               The health of our scholars is our priority. Clinics provide essential care to keep our forces strong and resilient.
             </p>
           </div>
@@ -143,8 +143,8 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-4 font-inter-bold">Invoice Management</h2>
-            <p className="text-xl text-gray-300 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Invoice Management</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Precise accounting ensures the efficient allocation of resources. All invoices are processed with diligence.
             </p>
           </div>
@@ -158,8 +158,8 @@ function App() {
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-gray-200 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
-            <p className="text-xl text-gray-300 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our scholars are well-fed.
             </p>
           </div>
@@ -170,16 +170,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-600 to-gray-800 text-gray-100 font-inter-regular p-4 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 to-orange-200 text-gray-900 font-inter-regular p-4 flex flex-col items-center">
       {/* Header section with app title */}
-      <header className="w-full max-w-4xl header-container p-6 rounded-lg shadow-xl mb-8">
+      <header className="w-full max-w-4xl header-container p-6 rounded-lg shadow-xl mb-8 border-4 border-orange-400">
         <h1 className="text-6xl font-extrabold text-center uppercase retro-header tracking-widest font-inter-bold">
           Shared Service Command
         </h1>
       </header>
 
       {/* Navigation section */}
-      <nav className="w-full max-w-4xl nav-container p-4 rounded-lg shadow-lg mb-8 border-2 border-gray-600 flex flex-wrap justify-center gap-4">
+      <nav className="w-full max-w-4xl nav-container p-4 rounded-lg shadow-lg mb-8 border-2 border-orange-300 flex flex-wrap justify-center gap-4">
         {navLinks.map((link) => (
           <button
             key={link.name}
@@ -192,12 +192,12 @@ function App() {
       </nav>
 
       {/* Main content area */}
-      <main className="w-full max-w-4xl bg-gray-800 p-8 rounded-lg shadow-xl border-4 border-gray-600">
+      <main className="w-full max-w-4xl content-area p-8 rounded-lg shadow-xl border-4 border-blue-800">
         {renderPageContent()}
       </main>
 
       {/* Footer section */}
-      <footer className="w-full max-w-4xl mt-8 text-center text-gray-400 text-sm font-inter-regular">
+      <footer className="w-full max-w-4xl mt-8 text-center text-gray-300 text-sm font-inter-regular">
         <p>&copy; 2025 Shared Service Command. All rights reserved. For the People!</p>
       </footer>
     </div>
