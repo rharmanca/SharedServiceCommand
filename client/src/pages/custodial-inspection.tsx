@@ -363,25 +363,6 @@ export default function CustodialInspectionPage() {
           </CardContent>
         </Card>
 
-        {/* Inspection Categories */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Inspection Categories</CardTitle>
-            <CardDescription>Rate each category based on the criteria (1-5 stars). Detailed criteria will appear when you select a rating.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-8">
-            {inspectionCategories.map((category, index) => (
-              <div key={category.key}>
-                <div className="space-y-4">
-                  <Label className="text-base font-medium">{category.label}</Label>
-                  {renderStarRating(category, formData[category.key as keyof typeof formData] as number)}
-                </div>
-                {index < inspectionCategories.length - 1 && <Separator className="mt-6" />}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
         {/* Image Upload Section */}
         <Card>
           <CardHeader>
@@ -444,6 +425,25 @@ export default function CustodialInspectionPage() {
                 </div>
               )}
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Inspection Categories */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Inspection Categories</CardTitle>
+            <CardDescription>Rate each category based on the criteria (1-5 stars). Detailed criteria will appear when you select a rating.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-8">
+            {inspectionCategories.map((category, index) => (
+              <div key={category.key}>
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">{category.label}</Label>
+                  {renderStarRating(category, formData[category.key as keyof typeof formData] as number)}
+                </div>
+                {index < inspectionCategories.length - 1 && <Separator className="mt-6" />}
+              </div>
+            ))}
           </CardContent>
         </Card>
 
