@@ -9,6 +9,7 @@ import foodServiceImage from '@assets/assets_task_01k0aj953ketma93xvm32n836b_175
 
 function App() {
   const [currentPage, setCurrentPage] = useState('Home');
+  const [isInstallSectionOpen, setIsInstallSectionOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', path: 'Home' },
@@ -25,39 +26,52 @@ function App() {
       case 'Home':
         return (
           <div className="text-center p-8">
-            <div className="mt-8 flex justify-center mb-8">
+            {/* Collapsible Mobile Installation Instructions */}
+            <div className="mb-8 max-w-2xl mx-auto">
+              <button
+                onClick={() => setIsInstallSectionOpen(!isInstallSectionOpen)}
+                className="w-full p-4 bg-amber-100 border-2 border-amber-300 rounded-lg shadow-md hover:bg-amber-150 transition-colors flex items-center justify-between"
+              >
+                <span className="text-lg font-bold text-amber-900">📱 Install on Your Mobile Device</span>
+                <span className="text-amber-900 text-xl">
+                  {isInstallSectionOpen ? '−' : '+'}
+                </span>
+              </button>
+              
+              {isInstallSectionOpen && (
+                <div className="mt-4 p-6 bg-amber-50 border-2 border-amber-300 rounded-lg shadow-md">
+                  <div className="text-amber-800 space-y-3">
+                    <div className="bg-white p-3 rounded border border-amber-200">
+                      <p className="font-semibold text-amber-900 mb-1">iPhone/iPad:</p>
+                      <p className="text-sm">1. Tap the Share button (□↗) in Safari</p>
+                      <p className="text-sm">2. Scroll down and tap "Add to Home Screen"</p>
+                      <p className="text-sm">3. Tap "Add" to install the app</p>
+                    </div>
+                    <div className="bg-white p-3 rounded border border-amber-200">
+                      <p className="font-semibold text-amber-900 mb-1">Android:</p>
+                      <p className="text-sm">1. Tap the menu (⋮) in Chrome or your browser</p>
+                      <p className="text-sm">2. Select "Add to Home screen" or "Install app"</p>
+                      <p className="text-sm">3. Tap "Add" or "Install" to confirm</p>
+                    </div>
+                    <p className="text-center text-sm font-medium text-amber-700 mt-3">
+                      Once installed, access the app directly from your home screen like any other app!
+                    </p>
+                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+                      <p className="text-center text-sm font-medium text-green-700">
+                        ✓ Works offline after installation - previously viewed pages remain accessible
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex justify-center mb-8">
               <img 
                 src={sharedServicesImage} 
                 alt="Shared Services Graphic" 
                 className="rounded-lg shadow-lg max-w-full h-auto" 
               />
-            </div>
-            
-            {/* Mobile Installation Instructions */}
-            <div className="mb-8 p-6 bg-amber-50 border-2 border-amber-300 rounded-lg shadow-md max-w-2xl mx-auto">
-              <h3 className="text-xl font-bold text-amber-900 mb-4 text-center">📱 Install on Your Mobile Device</h3>
-              <div className="text-amber-800 space-y-3">
-                <div className="bg-white p-3 rounded border border-amber-200">
-                  <p className="font-semibold text-amber-900 mb-1">iPhone/iPad:</p>
-                  <p className="text-sm">1. Tap the Share button (□↗) in Safari</p>
-                  <p className="text-sm">2. Scroll down and tap "Add to Home Screen"</p>
-                  <p className="text-sm">3. Tap "Add" to install the app</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-amber-200">
-                  <p className="font-semibold text-amber-900 mb-1">Android:</p>
-                  <p className="text-sm">1. Tap the menu (⋮) in Chrome or your browser</p>
-                  <p className="text-sm">2. Select "Add to Home screen" or "Install app"</p>
-                  <p className="text-sm">3. Tap "Add" or "Install" to confirm</p>
-                </div>
-                <p className="text-center text-sm font-medium text-amber-700 mt-3">
-                  Once installed, access the app directly from your home screen like any other app!
-                </p>
-                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
-                  <p className="text-center text-sm font-medium text-green-700">
-                    ✓ Works offline after installation - previously viewed pages remain accessible
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         );
