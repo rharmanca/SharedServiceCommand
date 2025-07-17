@@ -160,7 +160,7 @@ function App() {
             </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
-              Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our comrades are well-fed.
+              Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our scholars are well-fed.
             </p>
           </div>
         );
