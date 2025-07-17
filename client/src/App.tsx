@@ -52,6 +52,11 @@ function App() {
                 <p className="text-center text-sm font-medium text-amber-700 mt-3">
                   Once installed, access the app directly from your home screen like any other app!
                 </p>
+                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+                  <p className="text-center text-sm font-medium text-green-700">
+                    ✓ Works offline after installation - previously viewed pages remain accessible
+                  </p>
+                </div>
               </div>
             </div>
           </div>
