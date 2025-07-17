@@ -86,14 +86,14 @@
 }
 
 .retro-button {
-  background: linear-gradient(135deg, #8B0000 0%, #654321 100%);
-  border: 3px solid #654321;
-  color: #C0C0C0;
+  background: linear-gradient(135deg, #4A4A4A 0%, #2F2F2F 100%);
+  border: 3px solid #2F2F2F;
+  color: #D3D3D3;
   padding: 12px 24px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 6px 0 #4A4A4A, 0 8px 15px rgba(0,0,0,0.4);
+  box-shadow: 0 6px 0 #1A1A1A, 0 8px 15px rgba(0,0,0,0.5);
   transition: all 0.2s ease;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
@@ -101,17 +101,17 @@
 }
 
 .retro-button:hover {
-  background: linear-gradient(135deg, #654321 0%, #4A4A4A 100%);
+  background: linear-gradient(135deg, #2F2F2F 0%, #1A1A1A 100%);
   transform: translateY(2px);
-  box-shadow: 0 4px 0 #4A4A4A, 0 6px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 0 #1A1A1A, 0 6px 10px rgba(0,0,0,0.5);
 }
 
 .retro-button.active {
-  background: linear-gradient(135deg, #B8860B 0%, #8B6914 100%);
-  border-color: #8B6914;
-  box-shadow: 0 4px 0 #654321, 0 6px 10px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #696969 0%, #4A4A4A 100%);
+  border-color: #4A4A4A;
+  box-shadow: 0 4px 0 #2F2F2F, 0 6px 10px rgba(0,0,0,0.5);
   transform: translateY(2px);
-  color: #2F2F2F;
+  color: #E5E5E5;
 }
 
 /* Back button styling */
