@@ -39,11 +39,11 @@ function App() {
           <div className="p-8 text-center">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-6 font-inter-bold">Custodial Operations</h2>
+            <h2 className="text-4xl font-bold text-amber-900 mb-6 font-inter-bold">Custodial Operations</h2>
             <div className="flex justify-center mb-8">
               <img 
                 src={custodialDutyImage} 
@@ -51,7 +51,7 @@ function App() {
                 className="rounded-lg shadow-lg max-w-md h-auto" 
               />
             </div>
-            <p className="text-xl text-gray-800 font-inter-regular mb-8">
+            <p className="text-xl text-amber-800 font-inter-regular mb-8">
               Cleanliness is a duty for all.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -87,12 +87,12 @@ function App() {
           <div className="p-8">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Food Service Division</h2>
-            <p className="text-xl text-gray-800 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Food Service Division</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Nourishing our community is vital.
             </p>
             <div className="mt-8 flex justify-center">
@@ -109,12 +109,12 @@ function App() {
           <div className="p-8">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Transportation Logistics</h2>
-            <p className="text-xl text-gray-800 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Transportation Logistics</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Movement of goods and personnel is meticulously managed. Our transportation network is the lifeblood of our operations.
             </p>
           </div>
@@ -124,12 +124,12 @@ function App() {
           <div className="p-8">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Medical Clinics</h2>
-            <p className="text-xl text-gray-800 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Medical Clinics</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               The health of our scholars is our priority. Clinics provide essential care to keep our forces strong and resilient.
             </p>
           </div>
@@ -139,12 +139,12 @@ function App() {
           <div className="p-8">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Invoice Management</h2>
-            <p className="text-xl text-gray-800 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Invoice Management</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Precise accounting ensures the efficient allocation of resources. All invoices are processed with diligence.
             </p>
           </div>
@@ -154,12 +154,12 @@ function App() {
           <div className="p-8">
             <button 
               onClick={() => setCurrentPage('Home')}
-              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+              className="back-button mb-4"
             >
               ← Back to Home
             </button>
-            <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
-            <p className="text-xl text-gray-800 font-inter-regular">
+            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
+            <p className="text-xl text-amber-800 font-inter-regular">
               Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our scholars are well-fed.
             </p>
           </div>
@@ -170,10 +170,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white font-inter-regular p-4 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 to-orange-200 text-gray-900 font-inter-regular p-4 flex flex-col items-center">
       {/* Header section with app title */}
       <header className="w-full max-w-4xl header-container p-6 rounded-lg shadow-xl mb-8 border-4 border-orange-400">
-        <h1 className="text-6xl font-extrabold text-center text-orange-300 uppercase retro-header tracking-widest font-inter-bold">
+        <h1 className="text-6xl font-extrabold text-center uppercase retro-header tracking-widest font-inter-bold">
           Shared Service Command
         </h1>
       </header>
