@@ -5,6 +5,7 @@ import InspectionDataPage from './pages/inspection-data';
 import CustodialNotesPage from './pages/custodial-notes';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
 import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
+import foodServiceImage from '@assets/assets_task_01k0aj0p4tecjtfjnxcx55f57r_1752701218_img_1_1752777143111.webp';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('Home');
@@ -96,8 +97,8 @@ function App() {
             </p>
             <div className="mt-8 flex justify-center">
               <img 
-                src="https://placehold.co/400x300/2C3E50/E0E0E0?text=FOOD+SERVICE+COMMUNITY" 
-                alt="Food Service" 
+                src={foodServiceImage} 
+                alt="Food Service - Some Meals Are Better Shared" 
                 className="rounded-lg shadow-lg max-w-md h-auto" 
               />
             </div>
