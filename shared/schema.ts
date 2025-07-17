@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,10 +8,38 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
+export const inspections = pgTable("inspections", {
+  id: serial("id").primaryKey(),
+  school: text("school").notNull(),
+  date: text("date").notNull(),
+  locationDescription: text("location_description").notNull(),
+  roomNumber: text("room_number").notNull(),
+  floors: integer("floors").notNull(),
+  verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces").notNull(),
+  ceiling: integer("ceiling").notNull(),
+  restrooms: integer("restrooms").notNull(),
+  customerSatisfaction: integer("customer_satisfaction").notNull(),
+  trash: integer("trash").notNull(),
+  projectCleaning: integer("project_cleaning").notNull(),
+  activitySupport: integer("activity_support").notNull(),
+  safetyCompliance: integer("safety_compliance").notNull(),
+  equipment: integer("equipment").notNull(),
+  monitoring: integer("monitoring").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
 });
 
+export const insertInspectionSchema = createInsertSchema(inspections).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+export type InsertInspection = z.infer<typeof insertInspectionSchema>;
+export type Inspection = typeof inspections.$inferSelect;
