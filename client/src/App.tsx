@@ -64,7 +64,7 @@ function App() {
                 onClick={() => setCurrentPage('Inspection Data')}
                 className="retro-button bg-purple-700 hover:bg-purple-800 border-purple-500"
               >
-                View Inspection Data
+                View Data & Reports
               </button>
               <button 
                 onClick={() => setCurrentPage('Custodial Notes')}

@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar, MapPin, Building, Star, FileText, Image as ImageIcon } from 'lucide-react';
-import type { Inspection } from '@shared/schema';
+import type { Inspection, CustodialNote } from '@shared/schema';
 
 interface InspectionDataPageProps {
   onBack?: () => void;
@@ -12,6 +13,7 @@ interface InspectionDataPageProps {
 
 export default function InspectionDataPage({ onBack }: InspectionDataPageProps) {
   const [inspections, setInspections] = useState<Inspection[]>([]);
+  const [custodialNotes, setCustodialNotes] = useState<CustodialNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
 
@@ -38,18 +40,27 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
   ];
 
   useEffect(() => {
-    fetchInspections();
+    fetchData();
   }, []);
 
-  const fetchInspections = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('/api/inspections');
-      if (response.ok) {
-        const data = await response.json();
-        setInspections(data);
+      const [inspectionsResponse, notesResponse] = await Promise.all([
+        fetch('/api/inspections'),
+        fetch('/api/custodial-notes')
+      ]);
+      
+      if (inspectionsResponse.ok) {
+        const inspectionsData = await inspectionsResponse.json();
+        setInspections(inspectionsData);
+      }
+      
+      if (notesResponse.ok) {
+        const notesData = await notesResponse.json();
+        setCustodialNotes(notesData);
       }
     } catch (error) {
-      console.error('Error fetching inspections:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -186,79 +197,121 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        {onBack && (
-          <Button onClick={onBack} variant="outline" className="mb-4">
-            ← Back to Custodial
-          </Button>
-        )}
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Inspection Data</h1>
-        <p className="text-gray-600">View and analyze custodial inspection records</p>
+      {onBack && (
+        <Button onClick={onBack} variant="outline" className="mb-6">
+          ← Back to Custodial
+        </Button>
+      )}
+      
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-blue-800 mb-2">Custodial Data</h1>
+        <p className="text-gray-600">View all submitted inspections and custodial notes</p>
       </div>
 
-      {inspections.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Inspections Found</h3>
-            <p className="text-gray-600 mb-4">No inspection data has been submitted yet.</p>
-            <Button onClick={() => window.location.href = '/custodial/inspection'}>
-              Submit New Inspection
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-6">
-          {inspections.map((inspection) => (
-            <Card key={inspection.id} className="hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => setSelectedInspection(inspection)}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2">
-                    <Building className="w-5 h-5" />
-                    {inspection.school}
-                  </CardTitle>
-                  <Badge variant="secondary">
-                    Avg: {calculateAverageRating(inspection)} ★
-                  </Badge>
-                </div>
-                <CardDescription className="flex items-center gap-4">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    {new Date(inspection.date).toLocaleDateString()}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {inspection.locationDescription}
-                  </span>
-                  <span>Room {inspection.roomNumber}</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    {inspection.images && inspection.images.length > 0 && (
-                      <span className="flex items-center gap-1 text-sm text-gray-500">
-                        <ImageIcon className="w-4 h-4" />
-                        {inspection.images.length} photo{inspection.images.length !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                    {inspection.notes && (
-                      <span className="flex items-center gap-1 text-sm text-gray-500">
-                        <FileText className="w-4 h-4" />
-                        Notes included
-                      </span>
-                    )}
-                  </div>
-                  <Button variant="outline" size="sm">
-                    View Details
-                  </Button>
-                </div>
+      <Tabs defaultValue="inspections" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="inspections">Inspections ({inspections.length})</TabsTrigger>
+          <TabsTrigger value="notes">Custodial Notes ({custodialNotes.length})</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="inspections" className="mt-6">
+          {inspections.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No Inspections Found</h3>
+                <p className="text-gray-500">No inspection data has been submitted yet.</p>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
+          ) : (
+            <div className="grid gap-6">
+              {inspections.map((inspection) => (
+                <Card key={inspection.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedInspection(inspection)}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Building className="w-5 h-5" />
+                        {inspection.school}
+                      </div>
+                      <Badge variant="secondary">
+                        Avg: {calculateAverageRating(inspection)}/5
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(inspection.date).toLocaleDateString()}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {inspection.locationDescription}
+                      </div>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-gray-600">
+                        Room {inspection.roomNumber} • Click to view details
+                      </p>
+                      <div className="flex items-center gap-1">
+                        {renderStars(Math.round(calculateAverageRating(inspection)))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="notes" className="mt-6">
+          {custodialNotes.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No Custodial Notes Found</h3>
+                <p className="text-gray-500">No custodial notes have been submitted yet.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-6">
+              {custodialNotes.map((note) => (
+                <Card key={note.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Building className="w-5 h-5" />
+                      {note.school}
+                    </CardTitle>
+                    <CardDescription className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(note.date).toLocaleDateString()}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {note.location} - {note.locationDescription}
+                      </div>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <h4 className="font-medium text-gray-900">Notes & Issues:</h4>
+                        <p className="text-gray-700 mt-1 whitespace-pre-wrap">{note.notes}</p>
+                      </div>
+                      {note.createdAt && (
+                        <p className="text-xs text-gray-500">
+                          Submitted: {new Date(note.createdAt).toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
