@@ -54,11 +54,46 @@ export default function CustodialInspectionPage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Submit to backend
-    console.log('Inspection submitted:', formData);
-    alert('Inspection submitted successfully!');
+    try {
+      const response = await fetch('/api/inspections', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const inspection = await response.json();
+        alert('Inspection submitted successfully!');
+        // Reset form
+        setFormData({
+          school: '',
+          date: '',
+          locationDescription: '',
+          roomNumber: '',
+          floors: 0,
+          verticalHorizontalSurfaces: 0,
+          ceiling: 0,
+          restrooms: 0,
+          customerSatisfaction: 0,
+          trash: 0,
+          projectCleaning: 0,
+          activitySupport: 0,
+          safetyCompliance: 0,
+          equipment: 0,
+          monitoring: 0,
+          notes: ''
+        });
+      } else {
+        throw new Error('Failed to submit inspection');
+      }
+    } catch (error) {
+      console.error('Error submitting inspection:', error);
+      alert('Failed to submit inspection. Please try again.');
+    }
   };
 
   const renderStarRating = (category: string, currentRating: number) => {

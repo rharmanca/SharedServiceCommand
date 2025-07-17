@@ -50,9 +50,15 @@ Preferred communication style: Simple, everyday language.
 - **Form Handling**: React Hook Form with Zod validation
 
 ### Authentication System
-- **Storage**: In-memory user storage (development)
+- **Storage**: PostgreSQL database with DatabaseStorage implementation
 - **Session Management**: Express sessions with PostgreSQL backend
 - **User Schema**: Username/password with Drizzle Zod validation
+
+### Inspection System
+- **Database Schema**: PostgreSQL tables for inspections with 11 rating categories
+- **API Endpoints**: RESTful API for creating and retrieving inspections
+- **Rating System**: 1-5 star rating system based on custodial criteria
+- **Form Validation**: Zod schema validation for inspection data
 
 ## Data Flow
 
@@ -109,3 +115,13 @@ Preferred communication style: Simple, everyday language.
 4. **Database Strategy**: Drizzle ORM chosen for type safety and PostgreSQL compatibility
 5. **State Management**: TanStack Query for server state, avoiding complex client state management
 6. **Build Strategy**: Separate bundling for frontend and backend with optimized production builds
+
+## Recent Changes
+
+**January 17, 2025**
+- Added PostgreSQL database support with Drizzle ORM
+- Implemented custodial inspection system with comprehensive rating criteria
+- Created DatabaseStorage class replacing in-memory storage  
+- Added inspection API endpoints (/api/inspections)
+- Built interactive star rating system for facility assessments
+- Integrated inspection form with backend database storage
