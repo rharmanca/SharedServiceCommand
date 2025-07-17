@@ -26,6 +26,7 @@ export const inspections = pgTable("inspections", {
   equipment: integer("equipment").notNull(),
   monitoring: integer("monitoring").notNull(),
   notes: text("notes"),
+  images: text("images").array(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
