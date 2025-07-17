@@ -35,6 +35,12 @@ function App() {
       case 'Custodial':
         return (
           <div className="p-8 text-center">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-6 font-inter-bold">Custodial Operations</h2>
             <div className="flex justify-center mb-8">
               <img 
@@ -63,12 +69,18 @@ function App() {
           </div>
         );
       case 'Custodial Inspection':
-        return <CustodialInspectionPage />;
+        return <CustodialInspectionPage onBack={() => setCurrentPage('Custodial')} />;
       case 'Inspection Data':
-        return <InspectionDataPage />;
+        return <InspectionDataPage onBack={() => setCurrentPage('Custodial')} />;
       case 'Food Service':
         return (
           <div className="p-8">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Food Service Division</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
               Nourishing our community is vital.
@@ -85,6 +97,12 @@ function App() {
       case 'Transportation':
         return (
           <div className="p-8">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Transportation Logistics</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
               Movement of goods and personnel is meticulously managed. Our transportation network is the lifeblood of our operations.
@@ -94,6 +112,12 @@ function App() {
       case 'Clinics':
         return (
           <div className="p-8">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Medical Clinics</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
               The health of our comrades is our priority. Clinics provide essential care to keep our forces strong and resilient.
@@ -103,6 +127,12 @@ function App() {
       case 'Invoices':
         return (
           <div className="p-8">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Invoice Management</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
               Precise accounting ensures the efficient allocation of resources. All invoices are processed with diligence.
@@ -112,6 +142,12 @@ function App() {
       case 'Kitchen Equipment':
         return (
           <div className="p-8">
+            <button 
+              onClick={() => setCurrentPage('Home')}
+              className="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+              ← Back to Home
+            </button>
             <h2 className="text-4xl font-bold text-blue-800 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
             <p className="text-xl text-gray-800 font-inter-regular">
               Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our comrades are well-fed.

@@ -8,7 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Star, Upload, Camera, X } from 'lucide-react';
 
-export default function CustodialInspectionPage() {
+interface CustodialInspectionPageProps {
+  onBack?: () => void;
+}
+
+export default function CustodialInspectionPage({ onBack }: CustodialInspectionPageProps) {
   const [formData, setFormData] = useState({
     school: '',
     date: '',
@@ -282,6 +286,11 @@ export default function CustodialInspectionPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {onBack && (
+        <Button onClick={onBack} variant="outline" className="mb-4">
+          ← Back to Custodial
+        </Button>
+      )}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-blue-800 mb-2">Submit New Custodial Inspection</h1>
         <p className="text-gray-600">Complete the inspection form based on facility cleanliness criteria</p>

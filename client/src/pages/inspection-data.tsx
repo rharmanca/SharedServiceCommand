@@ -6,7 +6,11 @@ import { Separator } from '@/components/ui/separator';
 import { Calendar, MapPin, Building, Star, FileText, Image as ImageIcon } from 'lucide-react';
 import type { Inspection } from '@shared/schema';
 
-export default function InspectionDataPage() {
+interface InspectionDataPageProps {
+  onBack?: () => void;
+}
+
+export default function InspectionDataPage({ onBack }: InspectionDataPageProps) {
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
@@ -183,6 +187,11 @@ export default function InspectionDataPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
+        {onBack && (
+          <Button onClick={onBack} variant="outline" className="mb-4">
+            ← Back to Custodial
+          </Button>
+        )}
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Inspection Data</h1>
         <p className="text-gray-600">View and analyze custodial inspection records</p>
       </div>
