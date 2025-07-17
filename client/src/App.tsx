@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import HomePage from './pages/home';
 import CustodialInspectionPage from './pages/custodial-inspection';
+import InspectionDataPage from './pages/inspection-data';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
 import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
 
@@ -45,24 +46,26 @@ function App() {
             <p className="text-xl text-gray-800 font-inter-regular mb-8">
               Cleanliness is a duty for all.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <button 
                 onClick={() => setCurrentPage('Custodial Inspection')}
                 className="retro-button bg-green-700 hover:bg-green-800 border-green-500"
               >
                 Submit New Inspection
               </button>
-              <button className="retro-button bg-purple-700 hover:bg-purple-800 border-purple-500">
+              <button 
+                onClick={() => setCurrentPage('Inspection Data')}
+                className="retro-button bg-purple-700 hover:bg-purple-800 border-purple-500"
+              >
                 View Inspection Data
-              </button>
-              <button className="retro-button bg-yellow-700 hover:bg-yellow-800 border-yellow-500 text-gray-900">
-                Safety and Procedures
               </button>
             </div>
           </div>
         );
       case 'Custodial Inspection':
         return <CustodialInspectionPage />;
+      case 'Inspection Data':
+        return <InspectionDataPage />;
       case 'Food Service':
         return (
           <div className="p-8">
