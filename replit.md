@@ -125,3 +125,7 @@ Preferred communication style: Simple, everyday language.
 - Added inspection API endpoints (/api/inspections)
 - Built interactive star rating system for facility assessments
 - Integrated inspection form with backend database storage
+- Converted application to Progressive Web App (PWA) with manifest.json and service worker
+- Updated color scheme throughout app to match retro propaganda poster aesthetics
+- Added mobile installation instructions on home page for iOS and Android devices
+- Created custom PWA icons in retro theme colors matching the application design
