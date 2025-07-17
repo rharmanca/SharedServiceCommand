@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import HomePage from './pages/home';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
+import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('Home');
@@ -35,7 +36,7 @@ function App() {
             <h2 className="text-4xl font-bold text-blue-800 mb-6 font-inter-bold">Custodial Operations</h2>
             <div className="flex justify-center mb-8">
               <img 
-                src="https://placehold.co/400x300/2C3E50/E0E0E0?text=CUSTODIAL+DUTY" 
+                src={custodialDutyImage} 
                 alt="Custodial Duty" 
                 className="rounded-lg shadow-lg max-w-md h-auto" 
               />
