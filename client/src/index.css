@@ -153,3 +153,18 @@
 .header-container {
   background-color: rgba(17, 24, 39, 0.8);
 }
+
+/* Mobile responsive image adjustments */
+@media (max-width: 640px) {
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Ensure grid images scale properly on mobile */
+  .grid img {
+    width: 100%;
+    height: auto;
+    min-height: 4rem;
+  }
+}

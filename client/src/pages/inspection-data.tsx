@@ -151,7 +151,7 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
                       <img
                         src={image}
                         alt={`Inspection photo ${index + 1}`}
-                        className="w-full h-32 object-cover"
+                        className="w-full h-20 sm:h-24 md:h-32 object-cover"
                       />
                     </div>
                   ))}

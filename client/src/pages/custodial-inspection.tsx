@@ -419,7 +419,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                       <img
                         src={URL.createObjectURL(file)}
                         alt={`Preview ${index + 1}`}
-                        className="w-full h-24 object-cover rounded-lg border"
+                        className="w-full h-16 sm:h-20 md:h-24 object-cover rounded-lg border"
                       />
                       <button
                         type="button"

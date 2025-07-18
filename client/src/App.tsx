@@ -64,7 +64,7 @@ function App() {
               <img 
                 src={sharedServicesImage} 
                 alt="Shared Services Graphic" 
-                className="rounded-lg shadow-lg max-w-full h-auto" 
+                className="rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto" 
               />
             </div>
           </div>
@@ -103,7 +103,7 @@ function App() {
               <img 
                 src={custodialDutyImage} 
                 alt="Custodial Duty" 
-                className="rounded-lg shadow-lg max-w-md h-auto" 
+                className="rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md h-auto" 
               />
             </div>
             <p className="text-xl text-amber-800 font-inter-regular">
