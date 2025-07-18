@@ -79,17 +79,7 @@ function App() {
               ← Back to Home
             </button>
             <h2 className="text-4xl font-bold text-amber-900 mb-6 font-inter-bold">Custodial Operations</h2>
-            <div className="flex justify-center mb-8">
-              <img 
-                src={custodialDutyImage} 
-                alt="Custodial Duty" 
-                className="rounded-lg shadow-lg max-w-md h-auto" 
-              />
-            </div>
-            <p className="text-xl text-amber-800 font-inter-regular mb-8">
-              Cleanliness is a duty for all.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <button 
                 onClick={() => setCurrentPage('Custodial Inspection')}
                 className="retro-button bg-green-700 hover:bg-green-800 border-green-500"
@@ -109,6 +99,16 @@ function App() {
                 Submit Notes & Issues
               </button>
             </div>
+            <div className="flex justify-center mb-8">
+              <img 
+                src={custodialDutyImage} 
+                alt="Custodial Duty" 
+                className="rounded-lg shadow-lg max-w-md h-auto" 
+              />
+            </div>
+            <p className="text-xl text-amber-800 font-inter-regular">
+              Cleanliness is a duty for all.
+            </p>
           </div>
         );
       case 'Custodial Inspection':
