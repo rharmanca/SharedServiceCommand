@@ -20,6 +20,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     inspectionType: 'single_room',
     locationDescription: '',
     roomNumber: '',
+    locationCategory: '',
     floors: 0,
     verticalHorizontalSurfaces: 0,
     ceiling: 0,
@@ -43,6 +44,20 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     { value: 'OA', label: 'OA' },
     { value: 'CBR', label: 'CBR' },
     { value: 'WLC', label: 'WLC' }
+  ];
+
+  // Location category options
+  const locationCategoryOptions = [
+    { value: 'exterior', label: 'Exterior' },
+    { value: 'gym_bleachers', label: 'Gym and Bleachers' },
+    { value: 'classroom', label: 'Classroom' },
+    { value: 'cafeteria', label: 'Cafeteria' },
+    { value: 'utility_storage', label: 'Utility Or Storage' },
+    { value: 'admin_office', label: 'Admin or Office Area' },
+    { value: 'hallway', label: 'Hallway' },
+    { value: 'stairwell', label: 'Stairwell' },
+    { value: 'restroom', label: 'Restroom' },
+    { value: 'staff_single_restroom', label: 'Staff or Single Restroom' }
   ];
 
 
@@ -220,9 +235,14 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
       return;
     }
     
-    // Validate room number is provided
+    // Validate room number and location category are provided
     if (!formData.roomNumber) {
       alert('Please enter a room number for the inspection.');
+      return;
+    }
+    
+    if (!formData.locationCategory) {
+      alert('Please select a location category for the inspection.');
       return;
     }
     
@@ -253,6 +273,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
           inspectionType: 'single_room',
           locationDescription: '',
           roomNumber: '',
+          locationCategory: '',
           floors: 0,
           verticalHorizontalSurfaces: 0,
           ceiling: 0,
@@ -327,7 +348,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
         </Button>
       )}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-blue-800 mb-2">Submit New Room Inspection</h1>
+        <h1 className="text-3xl font-bold text-blue-800 mb-2">Submit Inspection</h1>
         <p className="text-gray-600">Complete the inspection form based on facility cleanliness criteria</p>
       </div>
 
@@ -387,6 +408,24 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                 placeholder="Enter room number"
                 required
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="locationCategory">Location Category</Label>
+              <Select
+                value={formData.locationCategory}
+                onValueChange={(value) => handleInputChange('locationCategory', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locationCategoryOptions.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {category.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
@@ -522,7 +561,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
         {/* Submit Button */}
         <div className="flex justify-end gap-4">
           <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700">
-            Submit Room Inspection
+            Submit Inspection
           </Button>
         </div>
       </form>

@@ -15,6 +15,7 @@ export const inspections = pgTable("inspections", {
   inspectionType: text("inspection_type").notNull(), // 'single_room' or 'whole_building'
   locationDescription: text("location_description").notNull(),
   roomNumber: text("room_number"), // For single room inspections
+  locationCategory: text("location_category"), // New field for location category
   buildingName: text("building_name"), // For whole building inspections
   // For single room inspections, store ratings directly
   floors: integer("floors"),
