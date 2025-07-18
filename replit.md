@@ -131,3 +131,4 @@ Preferred communication style: Simple, everyday language.
 - Created custom PWA icons in retro theme colors matching the application design
 - Simplified application to focus only on Home and Custodial sections, removing all other service departments
 - Added support for two types of inspections: single room and whole building with conditional form fields and validation
+- Implemented room verification system for whole building inspections requiring specific room types (Cafeteria, Athletic & Bleachers, at least 1 restroom, at least 3 classrooms, 3 office/admin areas, hallways, minimum 2 stairwells)

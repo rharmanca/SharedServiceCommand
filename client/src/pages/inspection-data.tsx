@@ -147,6 +147,31 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
               </Badge>
             </div>
 
+            {/* Show verified rooms for whole building inspections */}
+            {selectedInspection.inspectionType === 'whole_building' && selectedInspection.verifiedRooms && (
+              <div>
+                <h3 className="text-lg font-semibold mb-3">Verified Room Types</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {selectedInspection.verifiedRooms.map((roomId: string, index: number) => {
+                    const roomLabels: Record<string, string> = {
+                      'cafeteria': 'Cafeteria',
+                      'athletic_bleachers': 'Athletic & Bleachers',
+                      'restroom': 'Restroom',
+                      'classroom': 'Classroom',
+                      'office_admin': 'Office/Admin',
+                      'hallways': 'Hallways',
+                      'stairwells': 'Stairwell'
+                    };
+                    return (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {roomLabels[roomId] || roomId}
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <Separator />
 
             {/* Images */}

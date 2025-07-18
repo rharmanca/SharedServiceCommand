@@ -16,6 +16,7 @@ export const inspections = pgTable("inspections", {
   locationDescription: text("location_description").notNull(),
   roomNumber: text("room_number"), // Optional for single room inspections
   buildingName: text("building_name"), // Optional for whole building inspections
+  verifiedRooms: text("verified_rooms").array(), // Array of verified room types for whole building inspections
   floors: integer("floors").notNull(),
   verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces").notNull(),
   ceiling: integer("ceiling").notNull(),

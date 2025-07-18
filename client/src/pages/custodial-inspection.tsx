@@ -20,6 +20,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     locationDescription: '',
     roomNumber: '',
     buildingName: '',
+    verifiedRooms: [] as string[],
     floors: 0,
     verticalHorizontalSurfaces: 0,
     ceiling: 0,
@@ -34,6 +35,17 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     notes: '',
     images: [] as string[]
   });
+
+  // Required room types for whole building inspections
+  const requiredRoomTypes = [
+    { id: 'cafeteria', label: 'Cafeteria', required: 1 },
+    { id: 'athletic_bleachers', label: 'Athletic and Bleachers', required: 1 },
+    { id: 'restroom', label: 'Restrooms', required: 1, minimum: 1 },
+    { id: 'classroom', label: 'Classrooms', required: 3, minimum: 3 },
+    { id: 'office_admin', label: 'Office/Admin Areas', required: 3, minimum: 3 },
+    { id: 'hallways', label: 'Hallways', required: 1 },
+    { id: 'stairwells', label: 'Stairwells', required: 2, minimum: 2 }
+  ];
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
@@ -202,9 +214,25 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
       alert('Please enter a room number for single room inspection.');
       return;
     }
-    if (formData.inspectionType === 'whole_building' && !formData.buildingName) {
-      alert('Please enter a building name for whole building inspection.');
-      return;
+    if (formData.inspectionType === 'whole_building') {
+      if (!formData.buildingName) {
+        alert('Please enter a building name for whole building inspection.');
+        return;
+      }
+      
+      // Validate required room types for whole building inspection
+      const missingRooms = [];
+      for (const roomType of requiredRoomTypes) {
+        const verifiedCount = formData.verifiedRooms.filter(room => room === roomType.id).length;
+        if (verifiedCount < roomType.required) {
+          missingRooms.push(`${roomType.label} (need ${roomType.required}, have ${verifiedCount})`);
+        }
+      }
+      
+      if (missingRooms.length > 0) {
+        alert(`Please verify all required room types for whole building inspection:\n${missingRooms.join('\n')}`);
+        return;
+      }
     }
     
     try {
@@ -235,6 +263,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
           locationDescription: '',
           roomNumber: '',
           buildingName: '',
+          verifiedRooms: [],
           floors: 0,
           verticalHorizontalSurfaces: 0,
           ceiling: 0,
@@ -389,6 +418,89 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
             )}
           </CardContent>
         </Card>
+
+        {/* Room Verification for Whole Building Inspections */}
+        {formData.inspectionType === 'whole_building' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Required Room Types Verification</CardTitle>
+              <CardDescription>
+                Verify that all required room types have been inspected for this building
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {requiredRoomTypes.map((roomType) => {
+                  const verifiedCount = formData.verifiedRooms.filter(room => room === roomType.id).length;
+                  const isComplete = verifiedCount >= roomType.required;
+                  
+                  return (
+                    <div key={roomType.id} className={`p-4 border rounded-lg ${isComplete ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium">{roomType.label}</h4>
+                          <Badge variant={isComplete ? 'default' : 'secondary'}>
+                            {verifiedCount}/{roomType.required} verified
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              if (verifiedCount < roomType.required) {
+                                handleInputChange('verifiedRooms', [...formData.verifiedRooms, roomType.id]);
+                              }
+                            }}
+                            disabled={verifiedCount >= roomType.required}
+                          >
+                            + Add
+                          </Button>
+                          {verifiedCount > 0 && (
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                const rooms = [...formData.verifiedRooms];
+                                const index = rooms.findIndex(room => room === roomType.id);
+                                if (index > -1) {
+                                  rooms.splice(index, 1);
+                                  handleInputChange('verifiedRooms', rooms);
+                                }
+                              }}
+                            >
+                              - Remove
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      {roomType.minimum && (
+                        <p className="text-sm text-gray-600">
+                          Minimum required: {roomType.minimum}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+                
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-medium text-blue-800 mb-1">Inspection Requirements:</h4>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Cafeteria: 1 required</li>
+                    <li>• Athletic and Bleachers: 1 required</li>
+                    <li>• Restrooms: At least 1 required</li>
+                    <li>• Classrooms: At least 3 required</li>
+                    <li>• Office/Admin Areas: 3 required</li>
+                    <li>• Hallways: 1 required</li>
+                    <li>• Stairwells: At least 2 required</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Rating Scale Reference */}
         <Card>
