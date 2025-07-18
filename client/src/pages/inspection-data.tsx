@@ -132,8 +132,19 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
               </div>
               <div className="flex items-center gap-2">
                 <Building className="w-4 h-4 text-gray-500" />
-                <span>Room {selectedInspection.roomNumber}</span>
+                <span>
+                  {selectedInspection.inspectionType === 'single_room' 
+                    ? `Room ${selectedInspection.roomNumber}` 
+                    : `Building: ${selectedInspection.buildingName}`
+                  }
+                </span>
               </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500">Type:</span>
+              <Badge variant={selectedInspection.inspectionType === 'single_room' ? 'default' : 'secondary'}>
+                {selectedInspection.inspectionType === 'single_room' ? 'Single Room' : 'Whole Building'}
+              </Badge>
             </div>
 
             <Separator />
@@ -250,9 +261,17 @@ export default function InspectionDataPage({ onBack }: InspectionDataPageProps) 
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-600">
-                        Room {inspection.roomNumber} • Click to view details
-                      </p>
+                      <div className="space-y-1">
+                        <p className="text-sm text-gray-600">
+                          {inspection.inspectionType === 'single_room' 
+                            ? `Room ${inspection.roomNumber}` 
+                            : `Building: ${inspection.buildingName}`
+                          } • Click to view details
+                        </p>
+                        <Badge variant={inspection.inspectionType === 'single_room' ? 'default' : 'secondary'} className="text-xs">
+                          {inspection.inspectionType === 'single_room' ? 'Single Room' : 'Whole Building'}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-1">
                         {renderStars(Math.round(calculateAverageRating(inspection)))}
                       </div>

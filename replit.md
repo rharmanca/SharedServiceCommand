@@ -130,3 +130,4 @@ Preferred communication style: Simple, everyday language.
 - Added mobile installation instructions on home page for iOS and Android devices
 - Created custom PWA icons in retro theme colors matching the application design
 - Simplified application to focus only on Home and Custodial sections, removing all other service departments
+- Added support for two types of inspections: single room and whole building with conditional form fields and validation

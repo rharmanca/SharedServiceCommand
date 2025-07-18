@@ -12,8 +12,10 @@ export const inspections = pgTable("inspections", {
   id: serial("id").primaryKey(),
   school: text("school").notNull(),
   date: text("date").notNull(),
+  inspectionType: text("inspection_type").notNull(), // 'single_room' or 'whole_building'
   locationDescription: text("location_description").notNull(),
-  roomNumber: text("room_number").notNull(),
+  roomNumber: text("room_number"), // Optional for single room inspections
+  buildingName: text("building_name"), // Optional for whole building inspections
   floors: integer("floors").notNull(),
   verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces").notNull(),
   ceiling: integer("ceiling").notNull(),

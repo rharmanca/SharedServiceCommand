@@ -16,8 +16,10 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
   const [formData, setFormData] = useState({
     school: '',
     date: '',
+    inspectionType: 'single_room',
     locationDescription: '',
     roomNumber: '',
+    buildingName: '',
     floors: 0,
     verticalHorizontalSurfaces: 0,
     ceiling: 0,
@@ -194,6 +196,17 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate required fields based on inspection type
+    if (formData.inspectionType === 'single_room' && !formData.roomNumber) {
+      alert('Please enter a room number for single room inspection.');
+      return;
+    }
+    if (formData.inspectionType === 'whole_building' && !formData.buildingName) {
+      alert('Please enter a building name for whole building inspection.');
+      return;
+    }
+    
     try {
       // Convert images to base64
       const imageData = await convertImagesToBase64(selectedImages);
@@ -218,8 +231,10 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
         setFormData({
           school: '',
           date: '',
+          inspectionType: 'single_room',
           locationDescription: '',
           roomNumber: '',
+          buildingName: '',
           floors: 0,
           verticalHorizontalSurfaces: 0,
           ceiling: 0,
@@ -324,6 +339,21 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                 required
               />
             </div>
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="inspectionType">Inspection Type</Label>
+              <Select
+                value={formData.inspectionType}
+                onValueChange={(value) => handleInputChange('inspectionType', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select inspection type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="single_room">Single Room Inspection</SelectItem>
+                  <SelectItem value="whole_building">Whole Building Inspection</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="locationDescription">Location Description</Label>
               <Input
@@ -334,16 +364,29 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="roomNumber">Room Number</Label>
-              <Input
-                id="roomNumber"
-                value={formData.roomNumber}
-                onChange={(e) => handleInputChange('roomNumber', e.target.value)}
-                placeholder="Enter room number"
-                required
-              />
-            </div>
+            {formData.inspectionType === 'single_room' ? (
+              <div className="space-y-2">
+                <Label htmlFor="roomNumber">Room Number</Label>
+                <Input
+                  id="roomNumber"
+                  value={formData.roomNumber}
+                  onChange={(e) => handleInputChange('roomNumber', e.target.value)}
+                  placeholder="Enter room number"
+                  required
+                />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="buildingName">Building Name</Label>
+                <Input
+                  id="buildingName"
+                  value={formData.buildingName}
+                  onChange={(e) => handleInputChange('buildingName', e.target.value)}
+                  placeholder="Enter building name"
+                  required
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
 
