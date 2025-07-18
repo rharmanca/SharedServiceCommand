@@ -41,6 +41,16 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
   const [completedRooms, setCompletedRooms] = useState<string[]>([]);
   const [currentRoom, setCurrentRoom] = useState<string | null>(null);
 
+  // School options
+  const schoolOptions = [
+    { value: 'ASA', label: 'ASA' },
+    { value: 'LCA', label: 'LCA' },
+    { value: 'GWC', label: 'GWC' },
+    { value: 'OA', label: 'OA' },
+    { value: 'CBR', label: 'CBR' },
+    { value: 'WLC', label: 'WLC' }
+  ];
+
   // Required room types for whole building inspections
   const requiredRoomTypes = [
     { id: 'cafeteria', label: 'Cafeteria', required: 1 },
@@ -514,13 +524,21 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="school">School</Label>
-              <Input
-                id="school"
+              <Select
                 value={formData.school}
-                onChange={(e) => handleInputChange('school', e.target.value)}
-                placeholder="Enter school name"
-                required
-              />
+                onValueChange={(value) => handleInputChange('school', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select school" />
+                </SelectTrigger>
+                <SelectContent>
+                  {schoolOptions.map((school) => (
+                    <SelectItem key={school.value} value={school.value}>
+                      {school.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="date">Date</Label>
