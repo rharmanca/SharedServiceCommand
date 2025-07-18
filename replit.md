@@ -44,10 +44,11 @@ Preferred communication style: Simple, everyday language.
 - **Error Handling**: Centralized error middleware with status code mapping
 
 ### Frontend Features
-- **Navigation**: Simple two-page application with Home and Custodial sections
+- **Navigation**: Three-page application with Home, Custodial, and Gallery sections
 - **UI Components**: Complete Shadcn/UI component library
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Form Handling**: React Hook Form with Zod validation
+- **Gallery**: Showcases retro propaganda-style motivational posters for custodial teams
 
 ### Authentication System
 - **Storage**: PostgreSQL database with DatabaseStorage implementation
@@ -133,3 +134,5 @@ Preferred communication style: Simple, everyday language.
 - Simplified inspection system to only support single room inspections
 - Added school dropdown with predefined options: ASA, LCA, GWC, OA, CBR, WLC
 - Removed whole building inspection functionality based on user feedback
+- Added Gallery page showcasing retro propaganda-style motivational posters for custodial teams
+- Integrated image modal functionality for enlarged poster viewing with download options

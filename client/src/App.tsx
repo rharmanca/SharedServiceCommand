@@ -3,6 +3,7 @@ import HomePage from './pages/home';
 import CustodialInspectionPage from './pages/custodial-inspection';
 import InspectionDataPage from './pages/inspection-data';
 import CustodialNotesPage from './pages/custodial-notes';
+import GalleryPage from './pages/gallery';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
 import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
 
@@ -13,6 +14,7 @@ function App() {
   const navLinks = [
     { name: 'Home', path: 'Home' },
     { name: 'Custodial', path: 'Custodial' },
+    { name: 'Gallery', path: 'Gallery' },
   ];
 
   const renderPageContent = () => {
@@ -117,6 +119,8 @@ function App() {
         return <InspectionDataPage onBack={() => setCurrentPage('Custodial')} />;
       case 'Custodial Notes':
         return <CustodialNotesPage onBack={() => setCurrentPage('Custodial')} />;
+      case 'Gallery':
+        return <GalleryPage onBack={() => setCurrentPage('Home')} />;
 
       default:
         return null;
