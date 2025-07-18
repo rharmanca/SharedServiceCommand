@@ -14,9 +14,32 @@ export const inspections = pgTable("inspections", {
   date: text("date").notNull(),
   inspectionType: text("inspection_type").notNull(), // 'single_room' or 'whole_building'
   locationDescription: text("location_description").notNull(),
-  roomNumber: text("room_number"), // Optional for single room inspections
-  buildingName: text("building_name"), // Optional for whole building inspections
-  verifiedRooms: text("verified_rooms").array(), // Array of verified room types for whole building inspections
+  roomNumber: text("room_number"), // For single room inspections
+  buildingName: text("building_name"), // For whole building inspections
+  // For single room inspections, store ratings directly
+  floors: integer("floors"),
+  verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces"),
+  ceiling: integer("ceiling"),
+  restrooms: integer("restrooms"),
+  customerSatisfaction: integer("customer_satisfaction"),
+  trash: integer("trash"),
+  projectCleaning: integer("project_cleaning"),
+  activitySupport: integer("activity_support"),
+  safetyCompliance: integer("safety_compliance"),
+  equipment: integer("equipment"),
+  monitoring: integer("monitoring"),
+  notes: text("notes"),
+  images: text("images").array(),
+  isCompleted: boolean("is_completed").default(false), // For whole building inspections
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// New table for individual room inspections within a building inspection
+export const roomInspections = pgTable("room_inspections", {
+  id: serial("id").primaryKey(),
+  buildingInspectionId: integer("building_inspection_id").notNull(),
+  roomType: text("room_type").notNull(), // 'cafeteria', 'athletic_bleachers', etc.
+  roomIdentifier: text("room_identifier"), // Specific room number or identifier
   floors: integer("floors").notNull(),
   verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces").notNull(),
   ceiling: integer("ceiling").notNull(),
@@ -53,6 +76,11 @@ export const insertInspectionSchema = createInsertSchema(inspections).omit({
   createdAt: true,
 });
 
+export const insertRoomInspectionSchema = createInsertSchema(roomInspections).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertCustodialNoteSchema = createInsertSchema(custodialNotes).omit({
   id: true,
   createdAt: true,
@@ -62,5 +90,7 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertInspection = z.infer<typeof insertInspectionSchema>;
 export type Inspection = typeof inspections.$inferSelect;
+export type InsertRoomInspection = z.infer<typeof insertRoomInspectionSchema>;
+export type RoomInspection = typeof roomInspections.$inferSelect;
 export type InsertCustodialNote = z.infer<typeof insertCustodialNoteSchema>;
 export type CustodialNote = typeof custodialNotes.$inferSelect;

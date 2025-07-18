@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertInspectionSchema, insertCustodialNoteSchema } from "@shared/schema";
+import { insertInspectionSchema, insertCustodialNoteSchema, insertRoomInspectionSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // put application routes here
@@ -79,6 +79,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching custodial note:", error);
       res.status(500).json({ error: "Failed to fetch custodial note" });
+    }
+  });
+
+  // Update inspection (for marking building inspections as completed)
+  app.patch("/api/inspections/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updates = req.body;
+      const inspection = await storage.updateInspection(id, updates);
+      if (!inspection) {
+        return res.status(404).json({ error: "Inspection not found" });
+      }
+      res.json(inspection);
+    } catch (error) {
+      console.error("Error updating inspection:", error);
+      res.status(500).json({ error: "Failed to update inspection" });
+    }
+  });
+
+  // Room Inspection routes
+  app.post("/api/room-inspections", async (req, res) => {
+    try {
+      const validatedData = insertRoomInspectionSchema.parse(req.body);
+      const roomInspection = await storage.createRoomInspection(validatedData);
+      res.json(roomInspection);
+    } catch (error) {
+      console.error("Error creating room inspection:", error);
+      res.status(400).json({ error: "Invalid room inspection data" });
+    }
+  });
+
+  app.get("/api/room-inspections", async (req, res) => {
+    try {
+      const buildingInspectionId = req.query.buildingInspectionId;
+      if (buildingInspectionId) {
+        const roomInspections = await storage.getRoomInspectionsByBuildingId(parseInt(buildingInspectionId as string));
+        res.json(roomInspections);
+      } else {
+        const roomInspections = await storage.getRoomInspections();
+        res.json(roomInspections);
+      }
+    } catch (error) {
+      console.error("Error fetching room inspections:", error);
+      res.status(500).json({ error: "Failed to fetch room inspections" });
+    }
+  });
+
+  app.get("/api/room-inspections/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const roomInspection = await storage.getRoomInspection(id);
+      if (!roomInspection) {
+        return res.status(404).json({ error: "Room inspection not found" });
+      }
+      res.json(roomInspection);
+    } catch (error) {
+      console.error("Error fetching room inspection:", error);
+      res.status(500).json({ error: "Failed to fetch room inspection" });
     }
   });
 
