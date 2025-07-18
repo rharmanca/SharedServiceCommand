@@ -5,7 +5,6 @@ import InspectionDataPage from './pages/inspection-data';
 import CustodialNotesPage from './pages/custodial-notes';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
 import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
-import foodServiceImage from '@assets/assets_task_01k0aj953ketma93xvm32n836b_1752701495_img_0 (1)_1752777530099.webp';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('Home');
@@ -14,11 +13,6 @@ function App() {
   const navLinks = [
     { name: 'Home', path: 'Home' },
     { name: 'Custodial', path: 'Custodial' },
-    { name: 'Food Service', path: 'Food Service' },
-    { name: 'Transportation', path: 'Transportation' },
-    { name: 'Clinics', path: 'Clinics' },
-    { name: 'Invoices', path: 'Invoices' },
-    { name: 'Kitchen Equipment', path: 'Kitchen Equipment' },
   ];
 
   const renderPageContent = () => {
@@ -123,88 +117,7 @@ function App() {
         return <InspectionDataPage onBack={() => setCurrentPage('Custodial')} />;
       case 'Custodial Notes':
         return <CustodialNotesPage onBack={() => setCurrentPage('Custodial')} />;
-      case 'Food Service':
-        return (
-          <div className="p-8">
-            <button 
-              onClick={() => setCurrentPage('Home')}
-              className="back-button mb-4"
-            >
-              ← Back to Home
-            </button>
-            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Food Service Division</h2>
-            <p className="text-xl text-amber-800 font-inter-regular">
-              Nourishing our community is vital.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <img 
-                src={foodServiceImage} 
-                alt="Food Service - Some Meals Are Better Shared" 
-                className="rounded-lg shadow-lg max-w-md h-auto" 
-              />
-            </div>
-          </div>
-        );
-      case 'Transportation':
-        return (
-          <div className="p-8">
-            <button 
-              onClick={() => setCurrentPage('Home')}
-              className="back-button mb-4"
-            >
-              ← Back to Home
-            </button>
-            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Transportation Logistics</h2>
-            <p className="text-xl text-amber-800 font-inter-regular">
-              Movement of goods and personnel is meticulously managed. Our transportation network is the lifeblood of our operations.
-            </p>
-          </div>
-        );
-      case 'Clinics':
-        return (
-          <div className="p-8">
-            <button 
-              onClick={() => setCurrentPage('Home')}
-              className="back-button mb-4"
-            >
-              ← Back to Home
-            </button>
-            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Medical Clinics</h2>
-            <p className="text-xl text-amber-800 font-inter-regular">
-              The health of our scholars is our priority. Clinics provide essential care to keep our forces strong and resilient.
-            </p>
-          </div>
-        );
-      case 'Invoices':
-        return (
-          <div className="p-8">
-            <button 
-              onClick={() => setCurrentPage('Home')}
-              className="back-button mb-4"
-            >
-              ← Back to Home
-            </button>
-            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Invoice Management</h2>
-            <p className="text-xl text-amber-800 font-inter-regular">
-              Precise accounting ensures the efficient allocation of resources. All invoices are processed with diligence.
-            </p>
-          </div>
-        );
-      case 'Kitchen Equipment':
-        return (
-          <div className="p-8">
-            <button 
-              onClick={() => setCurrentPage('Home')}
-              className="back-button mb-4"
-            >
-              ← Back to Home
-            </button>
-            <h2 className="text-4xl font-bold text-amber-900 mb-4 font-inter-bold">Kitchen Equipment Inventory</h2>
-            <p className="text-xl text-amber-800 font-inter-regular">
-              Maintaining our culinary tools is paramount. A well-equipped kitchen ensures our scholars are well-fed.
-            </p>
-          </div>
-        );
+
       default:
         return null;
     }

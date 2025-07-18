@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application built for managing shared services operations including custodial, food service, transportation, clinics, invoices, and kitchen equipment. The application uses a modern tech stack with React frontend, Express backend, and PostgreSQL database with Drizzle ORM.
+This is a full-stack web application built for managing custodial services operations. The application uses a modern tech stack with React frontend, Express backend, and PostgreSQL database with Drizzle ORM.
 
 ## User Preferences
 
@@ -44,7 +44,7 @@ Preferred communication style: Simple, everyday language.
 - **Error Handling**: Centralized error middleware with status code mapping
 
 ### Frontend Features
-- **Navigation**: Multi-page application with department-specific sections
+- **Navigation**: Simple two-page application with Home and Custodial sections
 - **UI Components**: Complete Shadcn/UI component library
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Form Handling**: React Hook Form with Zod validation
@@ -129,3 +129,4 @@ Preferred communication style: Simple, everyday language.
 - Updated color scheme throughout app to match retro propaganda poster aesthetics
 - Added mobile installation instructions on home page for iOS and Android devices
 - Created custom PWA icons in retro theme colors matching the application design
+- Simplified application to focus only on Home and Custodial sections, removing all other service departments
