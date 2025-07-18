@@ -20,7 +20,6 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     inspectionType: 'single_room',
     locationDescription: '',
     roomNumber: '',
-    buildingName: '',
     floors: 0,
     verticalHorizontalSurfaces: 0,
     ceiling: 0,
@@ -36,11 +35,6 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     images: [] as string[]
   });
 
-  // Track building inspection state
-  const [buildingInspectionId, setBuildingInspectionId] = useState<number | null>(null);
-  const [completedRooms, setCompletedRooms] = useState<string[]>([]);
-  const [currentRoom, setCurrentRoom] = useState<string | null>(null);
-
   // School options
   const schoolOptions = [
     { value: 'ASA', label: 'ASA' },
@@ -51,107 +45,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
     { value: 'WLC', label: 'WLC' }
   ];
 
-  // Required room types for whole building inspections
-  const requiredRoomTypes = [
-    { id: 'cafeteria', label: 'Cafeteria', required: 1 },
-    { id: 'athletic_bleachers', label: 'Athletic and Bleachers', required: 1 },
-    { id: 'restroom', label: 'Restrooms', required: 1, minimum: 1 },
-    { id: 'classroom', label: 'Classrooms', required: 3, minimum: 3 },
-    { id: 'office_admin', label: 'Office/Admin Areas', required: 3, minimum: 3 },
-    { id: 'hallways', label: 'Hallways', required: 1 },
-    { id: 'stairwells', label: 'Stairwells', required: 2, minimum: 2 }
-  ];
 
-  // Create building inspection first, then room inspections
-  const createBuildingInspection = async () => {
-    try {
-      const buildingData = {
-        school: formData.school,
-        date: formData.date,
-        inspectionType: 'whole_building',
-        locationDescription: formData.locationDescription,
-        buildingName: formData.buildingName,
-        isCompleted: false
-      };
-
-      const response = await fetch('/api/inspections', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildingData),
-      });
-
-      if (response.ok) {
-        const inspection = await response.json();
-        setBuildingInspectionId(inspection.id);
-        return inspection.id;
-      } else {
-        throw new Error('Failed to create building inspection');
-      }
-    } catch (error) {
-      console.error('Error creating building inspection:', error);
-      alert('Failed to create building inspection. Please try again.');
-      return null;
-    }
-  };
-
-  const submitRoomInspection = async (roomType: string, roomId?: string) => {
-    if (!buildingInspectionId) return;
-
-    try {
-      const roomData = {
-        buildingInspectionId,
-        roomType,
-        roomIdentifier: roomId || `${roomType}_1`,
-        floors: formData.floors,
-        verticalHorizontalSurfaces: formData.verticalHorizontalSurfaces,
-        ceiling: formData.ceiling,
-        restrooms: formData.restrooms,
-        customerSatisfaction: formData.customerSatisfaction,
-        trash: formData.trash,
-        projectCleaning: formData.projectCleaning,
-        activitySupport: formData.activitySupport,
-        safetyCompliance: formData.safetyCompliance,
-        equipment: formData.equipment,
-        monitoring: formData.monitoring,
-        notes: formData.notes,
-        images: []
-      };
-
-      const response = await fetch('/api/room-inspections', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(roomData),
-      });
-
-      if (response.ok) {
-        setCompletedRooms(prev => [...prev, roomType]);
-        setCurrentRoom(null);
-        // Reset form for next room
-        setFormData(prev => ({
-          ...prev,
-          floors: 0,
-          verticalHorizontalSurfaces: 0,
-          ceiling: 0,
-          restrooms: 0,
-          customerSatisfaction: 0,
-          trash: 0,
-          projectCleaning: 0,
-          activitySupport: 0,
-          safetyCompliance: 0,
-          equipment: 0,
-          monitoring: 0,
-          notes: '',
-          images: []
-        }));
-        alert(`${requiredRoomTypes.find(r => r.id === roomType)?.label} inspection completed!`);
-      } else {
-        throw new Error('Failed to submit room inspection');
-      }
-    } catch (error) {
-      console.error('Error submitting room inspection:', error);
-      alert('Failed to submit room inspection. Please try again.');
-    }
-  };
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
@@ -326,85 +220,10 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
       return;
     }
     
-    // Handle different inspection types
-    if (formData.inspectionType === 'single_room') {
-      if (!formData.roomNumber) {
-        alert('Please enter a room number for single room inspection.');
-        return;
-      }
-      // Continue with single room submission (existing logic)
-    } else if (formData.inspectionType === 'whole_building') {
-      if (!formData.buildingName) {
-        alert('Please enter a building name for whole building inspection.');
-        return;
-      }
-      
-      if (currentRoom) {
-        // Submit current room inspection
-        await submitRoomInspection(currentRoom);
-        return;
-      }
-      
-      if (!buildingInspectionId) {
-        // Create building inspection first
-        const id = await createBuildingInspection();
-        if (!id) return;
-      }
-      
-      // Check if all rooms are completed
-      const allRoomsCompleted = requiredRoomTypes.every(roomType => {
-        const completedCount = completedRooms.filter(room => room === roomType.id).length;
-        return completedCount >= roomType.required;
-      });
-      
-      if (!allRoomsCompleted) {
-        alert('Please complete inspections for all required room types before finishing.');
-        return;
-      }
-      
-      // Mark building inspection as completed
-      try {
-        const response = await fetch(`/api/inspections/${buildingInspectionId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ isCompleted: true }),
-        });
-        
-        if (response.ok) {
-          alert('Building inspection completed successfully!');
-          // Reset all form data
-          setFormData({
-            school: '',
-            date: '',
-            inspectionType: 'single_room',
-            locationDescription: '',
-            roomNumber: '',
-            buildingName: '',
-            floors: 0,
-            verticalHorizontalSurfaces: 0,
-            ceiling: 0,
-            restrooms: 0,
-            customerSatisfaction: 0,
-            trash: 0,
-            projectCleaning: 0,
-            activitySupport: 0,
-            safetyCompliance: 0,
-            equipment: 0,
-            monitoring: 0,
-            notes: '',
-            images: []
-          });
-          setBuildingInspectionId(null);
-          setCompletedRooms([]);
-          setCurrentRoom(null);
-          if (onBack) onBack();
-          return;
-        }
-      } catch (error) {
-        console.error('Error completing building inspection:', error);
-        alert('Failed to complete building inspection.');
-        return;
-      }
+    // Validate room number is provided
+    if (!formData.roomNumber) {
+      alert('Please enter a room number for the inspection.');
+      return;
     }
     
     try {
@@ -434,8 +253,6 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
           inspectionType: 'single_room',
           locationDescription: '',
           roomNumber: '',
-          buildingName: '',
-          verifiedRooms: [],
           floors: 0,
           verticalHorizontalSurfaces: 0,
           ceiling: 0,
@@ -510,7 +327,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
         </Button>
       )}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-blue-800 mb-2">Submit New Custodial Inspection</h1>
+        <h1 className="text-3xl font-bold text-blue-800 mb-2">Submit New Room Inspection</h1>
         <p className="text-gray-600">Complete the inspection form based on facility cleanliness criteria</p>
       </div>
 
@@ -550,21 +367,7 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                 required
               />
             </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="inspectionType">Inspection Type</Label>
-              <Select
-                value={formData.inspectionType}
-                onValueChange={(value) => handleInputChange('inspectionType', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select inspection type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="single_room">Single Room Inspection</SelectItem>
-                  <SelectItem value="whole_building">Whole Building Inspection</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+
             <div className="space-y-2">
               <Label htmlFor="locationDescription">Location Description</Label>
               <Input
@@ -575,126 +378,23 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
                 required
               />
             </div>
-            {formData.inspectionType === 'single_room' ? (
-              <div className="space-y-2">
-                <Label htmlFor="roomNumber">Room Number</Label>
-                <Input
-                  id="roomNumber"
-                  value={formData.roomNumber}
-                  onChange={(e) => handleInputChange('roomNumber', e.target.value)}
-                  placeholder="Enter room number"
-                  required
-                />
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <Label htmlFor="buildingName">Building Name</Label>
-                <Input
-                  id="buildingName"
-                  value={formData.buildingName}
-                  onChange={(e) => handleInputChange('buildingName', e.target.value)}
-                  placeholder="Enter building name"
-                  required
-                />
-              </div>
-            )}
+            <div className="space-y-2">
+              <Label htmlFor="roomNumber">Room Number</Label>
+              <Input
+                id="roomNumber"
+                value={formData.roomNumber}
+                onChange={(e) => handleInputChange('roomNumber', e.target.value)}
+                placeholder="Enter room number"
+                required
+              />
+            </div>
           </CardContent>
         </Card>
 
-        {/* Room Selection for Whole Building Inspections */}
-        {formData.inspectionType === 'whole_building' && !currentRoom && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Building Inspection Progress</CardTitle>
-              <CardDescription>
-                Complete individual inspections for each required room type
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {requiredRoomTypes.map((roomType) => {
-                  const completedCount = completedRooms.filter(room => room === roomType.id).length;
-                  const isComplete = completedCount >= roomType.required;
-                  
-                  return (
-                    <div key={roomType.id} className={`p-4 border rounded-lg ${isComplete ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium">{roomType.label}</h4>
-                          <Badge variant={isComplete ? 'default' : 'secondary'}>
-                            {completedCount}/{roomType.required} completed
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {!isComplete && (
-                            <Button
-                              type="button"
-                              size="sm"
-                              onClick={() => setCurrentRoom(roomType.id)}
-                              disabled={!buildingInspectionId && (!formData.school || !formData.date || !formData.buildingName)}
-                            >
-                              Inspect {roomType.label}
-                            </Button>
-                          )}
-                          {isComplete && (
-                            <Badge variant="default" className="bg-green-600">
-                              ✓ Complete
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Required: {roomType.required} inspection{roomType.required > 1 ? 's' : ''}
-                      </p>
-                    </div>
-                  );
-                })}
-                
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-800 mb-1">Instructions:</h4>
-                  <p className="text-sm text-blue-700">
-                    1. Fill in basic building information above
-                    2. Click "Inspect" for each room type to complete individual inspections
-                    3. Complete all required room inspections to finish the building inspection
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
-        {/* Current Room Inspection Form */}
-        {currentRoom && (
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Inspecting: {requiredRoomTypes.find(r => r.id === currentRoom)?.label}
-              </CardTitle>
-              <CardDescription>
-                Complete the inspection ratings for this specific room type
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 mb-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentRoom(null)}
-                >
-                  ← Back to Room List
-                </Button>
-                <Badge variant="outline">
-                  Room {completedRooms.filter(r => r === currentRoom).length + 1} of {requiredRoomTypes.find(r => r.id === currentRoom)?.required}
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
-        {/* Rating Scale Reference - Only show when actively inspecting */}
-        {(formData.inspectionType === 'single_room' || currentRoom) && (
-          <Card>
+        {/* Rating Scale Reference */}
+        <Card>
           <CardHeader>
             <CardTitle>Rating Scale Reference</CardTitle>
           </CardHeader>
@@ -716,11 +416,9 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
               ))}
             </div>
           </CardContent>
-          </Card>
-        )}
+        </Card>
 
-        {/* Image Upload Section - Only show when actively inspecting */}
-        {(formData.inspectionType === 'single_room' || currentRoom) && (
+        {/* Image Upload Section */}
         <Card>
           <CardHeader>
             <CardTitle>Inspection Photos</CardTitle>
@@ -784,11 +482,9 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
             </div>
           </CardContent>
         </Card>
-        )}
 
-        {/* Inspection Categories - Only show when actively inspecting */}
-        {(formData.inspectionType === 'single_room' || currentRoom) && (
-          <Card>
+        {/* Inspection Categories */}
+        <Card>
             <CardHeader>
               <CardTitle>Inspection Categories</CardTitle>
               <CardDescription>Rate each category based on the criteria (1-5 stars). Detailed criteria will appear when you select a rating.</CardDescription>
@@ -804,12 +500,10 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
               </div>
             ))}
             </CardContent>
-          </Card>
-        )}
+        </Card>
 
-        {/* Additional Notes - Only show when actively inspecting */}
-        {(formData.inspectionType === 'single_room' || currentRoom) && (
-          <Card>
+        {/* Additional Notes */}
+        <Card>
             <CardHeader>
               <CardTitle>Additional Notes & Observations</CardTitle>
               <CardDescription>Detailed observations, specific issues, recommendations, or additional context</CardDescription>
@@ -823,31 +517,13 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
               className="min-h-[200px]"
             />
             </CardContent>
-          </Card>
-        )}
+        </Card>
 
         {/* Submit Button */}
         <div className="flex justify-end gap-4">
-          {formData.inspectionType === 'single_room' && (
-            <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Submit Single Room Inspection
-            </Button>
-          )}
-          {formData.inspectionType === 'whole_building' && !buildingInspectionId && (
-            <Button type="submit" size="lg" className="bg-green-600 hover:bg-green-700">
-              Start Building Inspection
-            </Button>
-          )}
-          {formData.inspectionType === 'whole_building' && currentRoom && (
-            <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Submit {requiredRoomTypes.find(r => r.id === currentRoom)?.label} Inspection
-            </Button>
-          )}
-          {formData.inspectionType === 'whole_building' && buildingInspectionId && !currentRoom && (
-            <Button type="submit" size="lg" className="bg-green-600 hover:bg-green-700">
-              Complete Building Inspection
-            </Button>
-          )}
+          <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700">
+            Submit Room Inspection
+          </Button>
         </div>
       </form>
     </div>

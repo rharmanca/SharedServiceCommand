@@ -130,5 +130,6 @@ Preferred communication style: Simple, everyday language.
 - Added mobile installation instructions on home page for iOS and Android devices
 - Created custom PWA icons in retro theme colors matching the application design
 - Simplified application to focus only on Home and Custodial sections, removing all other service departments
-- Added support for two types of inspections: single room and whole building with conditional form fields and validation
-- Implemented room verification system for whole building inspections requiring specific room types (Cafeteria, Athletic & Bleachers, at least 1 restroom, at least 3 classrooms, 3 office/admin areas, hallways, minimum 2 stairwells)
+- Simplified inspection system to only support single room inspections
+- Added school dropdown with predefined options: ASA, LCA, GWC, OA, CBR, WLC
+- Removed whole building inspection functionality based on user feedback
