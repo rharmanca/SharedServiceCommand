@@ -209,6 +209,17 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form submission started with data:', formData);
+    
+    // Validate that all categories have been rated
+    const ratingFields = ['floors', 'verticalHorizontalSurfaces', 'ceiling', 'restrooms', 'customerSatisfaction', 'trash', 'projectCleaning', 'activitySupport', 'safetyCompliance', 'equipment', 'monitoring'];
+    const missingRatings = ratingFields.filter(field => formData[field as keyof typeof formData] === 0);
+    
+    if (missingRatings.length > 0) {
+      alert('Please rate all categories before submitting the inspection.');
+      return;
+    }
+    
     // Validate required fields based on inspection type
     if (formData.inspectionType === 'single_room' && !formData.roomNumber) {
       alert('Please enter a room number for single room inspection.');
@@ -279,11 +290,13 @@ export default function CustodialInspectionPage({ onBack }: CustodialInspectionP
           images: []
         });
         setSelectedImages([]);
+        if (onBack) onBack();
       } else {
         throw new Error('Failed to submit inspection');
       }
     } catch (error) {
       console.error('Error submitting inspection:', error);
+      console.error('Form data that caused error:', formData);
       alert('Failed to submit inspection. Please try again.');
     }
   };
