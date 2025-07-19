@@ -136,3 +136,13 @@ Preferred communication style: Simple, everyday language.
 - Removed whole building inspection functionality based on user feedback
 - Added Gallery page showcasing retro propaganda-style motivational posters for custodial teams
 - Integrated image modal functionality for enlarged poster viewing with download options
+
+**January 18, 2025**
+- Changed inspection form title from "Submit New Room Inspection" to "Submit Inspection"
+- Added location category dropdown with 10 predefined options for better categorization
+- Updated database schema to include location_category field
+- Re-implemented whole building inspection feature as a separate comprehensive workflow
+- Created dynamic checklist system for tracking completion of required inspections per category
+- Added real-time progress tracking with visual indicators (checkmarks and completion counts)
+- Implemented category-specific inspection requirements (e.g., 3 classrooms, 2 restrooms)
+- Added final submission button that only enables when all category requirements are met

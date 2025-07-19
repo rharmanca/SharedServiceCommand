@@ -4,6 +4,7 @@ import CustodialInspectionPage from './pages/custodial-inspection';
 import InspectionDataPage from './pages/inspection-data';
 import CustodialNotesPage from './pages/custodial-notes';
 import GalleryPage from './pages/gallery';
+import WholeBuildingInspectionPage from './pages/whole-building-inspection';
 import sharedServicesImage from '@assets/assets_task_01k0ahgtr1egvvpjk9qvwtzvyg_1752700690_img_1_1752767788234.webp';
 import custodialDutyImage from '@assets/assets_task_01k0ah80j5ebdamsccd7rpnaeh_1752700412_img_0_1752768056345.webp';
 
@@ -81,12 +82,18 @@ function App() {
               ← Back to Home
             </button>
             <h2 className="text-4xl font-bold text-amber-900 mb-6 font-inter-bold">Custodial Operations</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <button 
                 onClick={() => setCurrentPage('Custodial Inspection')}
                 className="retro-button bg-green-700 hover:bg-green-800 border-green-500"
               >
                 Submit New Inspection
+              </button>
+              <button 
+                onClick={() => setCurrentPage('Whole Building Inspection')}
+                className="retro-button bg-blue-700 hover:bg-blue-800 border-blue-500"
+              >
+                Submit Whole Building Inspection
               </button>
               <button 
                 onClick={() => setCurrentPage('Inspection Data')}
@@ -121,6 +128,8 @@ function App() {
         return <CustodialNotesPage onBack={() => setCurrentPage('Custodial')} />;
       case 'Gallery':
         return <GalleryPage onBack={() => setCurrentPage('Home')} />;
+      case 'Whole Building Inspection':
+        return <WholeBuildingInspectionPage onBack={() => setCurrentPage('Custodial')} />;
 
       default:
         return null;
