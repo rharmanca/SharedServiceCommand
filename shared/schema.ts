@@ -18,7 +18,7 @@ export const inspections = pgTable("inspections", {
   locationCategory: text("location_category"), // New field for location category
   buildingName: text("building_name"), // For whole building inspections
   buildingInspectionId: integer("building_inspection_id"), // Reference to parent building inspection
-  // For single room inspections, store ratings directly
+  // For single room inspections, store ratings directly (nullable for building inspections)
   floors: integer("floors"),
   verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces"),
   ceiling: integer("ceiling"),
@@ -32,6 +32,7 @@ export const inspections = pgTable("inspections", {
   monitoring: integer("monitoring"),
   notes: text("notes"),
   images: text("images").array(),
+  verifiedRooms: text("verified_rooms").array(), // For tracking completed room types in building inspections
   isCompleted: boolean("is_completed").default(false), // For whole building inspections
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

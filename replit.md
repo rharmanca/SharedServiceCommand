@@ -150,3 +150,10 @@ Preferred communication style: Simple, everyday language.
 - Added automatic progress detection when user returns to incomplete building inspection
 - Updated database schema to include building_inspection_id for linking room inspections to building inspections
 - Fixed database constraint errors by properly handling null values for building inspection records
+
+**July 19, 2025**
+- Fixed critical startup issues preventing application from running
+- Resolved missing zod import in server/routes.ts causing ReferenceError
+- Fixed database constraint violations by making rating columns nullable for building inspections
+- Updated database schema to match existing table structure with verified_rooms column
+- Verified both single room and whole building inspection workflows are functioning correctly
