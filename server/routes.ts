@@ -18,7 +18,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(inspection);
     } catch (error) {
       console.error("Error creating inspection:", error);
-      res.status(400).json({ error: "Invalid inspection data" });
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: "Invalid inspection data", details: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to create inspection" });
+      }
     }
   });
 

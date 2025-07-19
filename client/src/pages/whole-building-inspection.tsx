@@ -61,6 +61,10 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
     return initial;
   });
 
+  // Track if we're resuming a previous inspection
+  const [isResuming, setIsResuming] = useState(false);
+  const [savedInspections, setSavedInspections] = useState<any[]>([]);
+
   // Form data for current inspection
   const [formData, setFormData] = useState({
     school: '',
@@ -120,37 +124,83 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
     setIsAllComplete(checkCompletion());
   }, [completed]);
 
-  // Initialize building inspection on mount
+  // Check for existing incomplete building inspections on mount
   useEffect(() => {
-    const initializeBuildingInspection = async () => {
-      if (!buildingInspectionId && formData.school && formData.date) {
+    const checkForExistingInspection = async () => {
+      if (formData.school && formData.date) {
         try {
-          const response = await fetch('/api/inspections', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              school: formData.school,
-              date: formData.date,
-              inspectionType: 'whole_building',
-              locationDescription: 'Whole Building Inspection',
-              isCompleted: false
-            }),
-          });
+          // First check if there's an existing incomplete inspection
+          const inspectionsResponse = await fetch('/api/inspections');
+          if (inspectionsResponse.ok) {
+            const allInspections = await inspectionsResponse.json();
+            const existingInspection = allInspections.find((insp: any) => 
+              insp.school === formData.school && 
+              insp.date === formData.date && 
+              insp.inspectionType === 'whole_building' && 
+              !insp.isCompleted
+            );
 
-          if (response.ok) {
-            const inspection = await response.json();
-            setBuildingInspectionId(inspection.id);
+            if (existingInspection) {
+              // Resume existing inspection
+              setBuildingInspectionId(existingInspection.id);
+              setIsResuming(true);
+              
+              // Load completed inspections for this building
+              const completedInspections = allInspections.filter((insp: any) => 
+                insp.buildingInspectionId === existingInspection.id
+              );
+              
+              setSavedInspections(completedInspections);
+              
+              // Update completed counts
+              const newCompleted: Record<string, number> = { ...completed };
+              completedInspections.forEach((insp: any) => {
+                if (insp.locationCategory && newCompleted[insp.locationCategory] !== undefined) {
+                  newCompleted[insp.locationCategory]++;
+                }
+              });
+              setCompleted(newCompleted);
+            } else {
+              // Create new building inspection
+              const response = await fetch('/api/inspections', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  school: formData.school,
+                  date: formData.date,
+                  inspectionType: 'whole_building',
+                  locationDescription: 'Whole Building Inspection',
+                  isCompleted: false,
+                  // Set null for fields that don't apply to building inspections
+                  floors: null,
+                  verticalHorizontalSurfaces: null,
+                  ceiling: null,
+                  restrooms: null,
+                  customerSatisfaction: null,
+                  trash: null,
+                  projectCleaning: null,
+                  activitySupport: null,
+                  safetyCompliance: null,
+                  equipment: null,
+                  monitoring: null
+                }),
+              });
+
+              if (response.ok) {
+                const inspection = await response.json();
+                setBuildingInspectionId(inspection.id);
+                setIsResuming(false);
+              }
+            }
           }
         } catch (error) {
-          console.error('Error creating building inspection:', error);
+          console.error('Error checking/creating building inspection:', error);
         }
       }
     };
 
-    if (formData.school && formData.date) {
-      initializeBuildingInspection();
-    }
-  }, [formData.school, formData.date, buildingInspectionId]);
+    checkForExistingInspection();
+  }, [formData.school, formData.date]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -188,7 +238,8 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
         ...formData,
         locationCategory: selectedCategory,
         inspectionType: 'single_room',
-        buildingInspectionId: buildingInspectionId
+        buildingInspectionId: buildingInspectionId,
+        images: []  // Ensure images is an empty array
       };
 
       const response = await fetch('/api/inspections', {
@@ -198,11 +249,16 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
       });
 
       if (response.ok) {
+        const savedInspection = await response.json();
+        
         // Update completed count
         setCompleted(prev => ({
           ...prev,
           [selectedCategory]: prev[selectedCategory] + 1
         }));
+
+        // Add to saved inspections
+        setSavedInspections(prev => [...prev, savedInspection]);
 
         // Reset form but keep school and date
         setFormData(prev => ({
@@ -223,8 +279,10 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
           notes: ''
         }));
 
-        alert(`${categoryLabels[selectedCategory]} inspection submitted successfully!`);
+        alert(`${categoryLabels[selectedCategory]} inspection submitted and saved!`);
       } else {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
         throw new Error('Failed to submit inspection');
       }
     } catch (error) {
@@ -297,6 +355,13 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
         <p className="text-gray-600">
           This form is for your comprehensive building inspection. Simply go through the list below and submit the required number of inspections for each category. The inspection criteria are the same ones you're already familiar with from standard inspections.
         </p>
+        {isResuming && (
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800 font-medium">
+              ✓ Resuming your previous inspection session. Your progress has been saved!
+            </p>
+          </div>
+        )}
       </div>
 
       {/* School and Date Selection */}
@@ -341,7 +406,14 @@ export default function WholeBuildingInspectionPage({ onBack }: WholeBuildingIns
       <Card>
         <CardHeader>
           <CardTitle>Inspection Progress</CardTitle>
-          <CardDescription>Complete the required number of inspections for each category</CardDescription>
+          <CardDescription>
+            Complete the required number of inspections for each category
+            {formData.school && formData.date && (
+              <span className="text-sm text-gray-500 ml-2">
+                (Progress is automatically saved)
+              </span>
+            )}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {Object.entries(requirements).map(([category, required]) => {

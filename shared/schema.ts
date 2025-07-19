@@ -17,6 +17,7 @@ export const inspections = pgTable("inspections", {
   roomNumber: text("room_number"), // For single room inspections
   locationCategory: text("location_category"), // New field for location category
   buildingName: text("building_name"), // For whole building inspections
+  buildingInspectionId: integer("building_inspection_id"), // Reference to parent building inspection
   // For single room inspections, store ratings directly
   floors: integer("floors"),
   verticalHorizontalSurfaces: integer("vertical_horizontal_surfaces"),
@@ -75,6 +76,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertInspectionSchema = createInsertSchema(inspections).omit({
   id: true,
   createdAt: true,
+}).extend({
+  buildingInspectionId: z.number().optional(),
 });
 
 export const insertRoomInspectionSchema = createInsertSchema(roomInspections).omit({

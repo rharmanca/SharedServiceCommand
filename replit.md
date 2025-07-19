@@ -146,3 +146,7 @@ Preferred communication style: Simple, everyday language.
 - Added real-time progress tracking with visual indicators (checkmarks and completion counts)
 - Implemented category-specific inspection requirements (e.g., 3 classrooms, 2 restrooms)
 - Added final submission button that only enables when all category requirements are met
+- Implemented save/resume functionality for whole building inspections
+- Added automatic progress detection when user returns to incomplete building inspection
+- Updated database schema to include building_inspection_id for linking room inspections to building inspections
+- Fixed database constraint errors by properly handling null values for building inspection records
